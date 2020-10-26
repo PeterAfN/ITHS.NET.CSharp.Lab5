@@ -28,96 +28,100 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.textBoxURL = new System.Windows.Forms.TextBox();
+            this.textBoxImageLinks = new System.Windows.Forms.TextBox();
+            this.labelImagesFound = new System.Windows.Forms.Label();
+            this.buttonExtract = new System.Windows.Forms.Button();
+            this.buttonSaveImages = new System.Windows.Forms.Button();
+            this.tableLayoutPanelInput = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanelInput.SuspendLayout();
             this.SuspendLayout();
             // 
-            // textBox1
+            // textBoxURL
             // 
-            this.textBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBox1.Location = new System.Drawing.Point(3, 3);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(380, 20);
-            this.textBox1.TabIndex = 0;
+            this.textBoxURL.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBoxURL.Location = new System.Drawing.Point(3, 3);
+            this.textBoxURL.Name = "textBoxURL";
+            this.textBoxURL.Size = new System.Drawing.Size(923, 20);
+            this.textBoxURL.TabIndex = 0;
+            this.textBoxURL.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxURL_KeyDown);
             // 
-            // textBox2
+            // textBoxImageLinks
             // 
-            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.textBoxImageLinks.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox2.Location = new System.Drawing.Point(10, 40);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(463, 212);
-            this.textBox2.TabIndex = 1;
+            this.textBoxImageLinks.Location = new System.Drawing.Point(10, 40);
+            this.textBoxImageLinks.Multiline = true;
+            this.textBoxImageLinks.Name = "textBoxImageLinks";
+            this.textBoxImageLinks.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBoxImageLinks.Size = new System.Drawing.Size(1006, 448);
+            this.textBoxImageLinks.TabIndex = 1;
             // 
-            // label1
+            // labelImagesFound
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 268);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(95, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Images found: 106";
+            this.labelImagesFound.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelImagesFound.AutoSize = true;
+            this.labelImagesFound.Location = new System.Drawing.Point(10, 504);
+            this.labelImagesFound.Name = "labelImagesFound";
+            this.labelImagesFound.Size = new System.Drawing.Size(95, 13);
+            this.labelImagesFound.TabIndex = 2;
+            this.labelImagesFound.Text = "Images found: 106";
             // 
-            // button1
+            // buttonExtract
             // 
-            this.button1.Location = new System.Drawing.Point(389, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(77, 20);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Extract";
-            this.button1.UseVisualStyleBackColor = true;
+            this.buttonExtract.Location = new System.Drawing.Point(932, 3);
+            this.buttonExtract.Name = "buttonExtract";
+            this.buttonExtract.Size = new System.Drawing.Size(77, 20);
+            this.buttonExtract.TabIndex = 3;
+            this.buttonExtract.Text = "Extract";
+            this.buttonExtract.UseVisualStyleBackColor = true;
+            this.buttonExtract.Click += new System.EventHandler(this.ButtonExtract_Click);
             // 
-            // button2
+            // buttonSaveImages
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(396, 265);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(80, 22);
-            this.button2.TabIndex = 4;
-            this.button2.Text = "Save images";
-            this.button2.UseVisualStyleBackColor = true;
+            this.buttonSaveImages.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSaveImages.Location = new System.Drawing.Point(939, 501);
+            this.buttonSaveImages.Name = "buttonSaveImages";
+            this.buttonSaveImages.Size = new System.Drawing.Size(80, 22);
+            this.buttonSaveImages.TabIndex = 4;
+            this.buttonSaveImages.Text = "Save images";
+            this.buttonSaveImages.UseVisualStyleBackColor = true;
+            this.buttonSaveImages.Click += new System.EventHandler(this.ButtonSaveImages_Click);
             // 
-            // tableLayoutPanel1
+            // tableLayoutPanelInput
             // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 86F));
-            this.tableLayoutPanel1.Controls.Add(this.button1, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.textBox1, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(7, 7);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(472, 27);
-            this.tableLayoutPanel1.TabIndex = 5;
+            this.tableLayoutPanelInput.ColumnCount = 2;
+            this.tableLayoutPanelInput.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelInput.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 86F));
+            this.tableLayoutPanelInput.Controls.Add(this.buttonExtract, 1, 0);
+            this.tableLayoutPanelInput.Controls.Add(this.textBoxURL, 0, 0);
+            this.tableLayoutPanelInput.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tableLayoutPanelInput.Location = new System.Drawing.Point(7, 7);
+            this.tableLayoutPanelInput.Name = "tableLayoutPanelInput";
+            this.tableLayoutPanelInput.RowCount = 1;
+            this.tableLayoutPanelInput.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanelInput.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
+            this.tableLayoutPanelInput.Size = new System.Drawing.Size(1015, 27);
+            this.tableLayoutPanelInput.TabIndex = 5;
             // 
-            // Form1
+            // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(486, 297);
-            this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox2);
+            this.ClientSize = new System.Drawing.Size(1029, 533);
+            this.Controls.Add(this.tableLayoutPanelInput);
+            this.Controls.Add(this.buttonSaveImages);
+            this.Controls.Add(this.labelImagesFound);
+            this.Controls.Add(this.textBoxImageLinks);
             this.DoubleBuffered = true;
-            this.Name = "Form1";
+            this.Name = "FormMain";
             this.Padding = new System.Windows.Forms.Padding(7);
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Image Scraper";
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
+            this.tableLayoutPanelInput.ResumeLayout(false);
+            this.tableLayoutPanelInput.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -125,12 +129,12 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TextBox textBoxURL;
+        private System.Windows.Forms.TextBox textBoxImageLinks;
+        private System.Windows.Forms.Label labelImagesFound;
+        private System.Windows.Forms.Button buttonExtract;
+        private System.Windows.Forms.Button buttonSaveImages;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelInput;
     }
 }
 
