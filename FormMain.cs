@@ -208,5 +208,10 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
             var rgx = new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
             return rgx.IsMatch(source);
         }
+
+        private void textBoxURL_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            buttonSaveImages.Enabled = false;
+        }
     }
 }

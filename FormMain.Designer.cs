@@ -46,6 +46,7 @@
             this.textBoxURL.Name = "textBoxURL";
             this.textBoxURL.Size = new System.Drawing.Size(923, 20);
             this.textBoxURL.TabIndex = 0;
+            this.textBoxURL.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxURL_KeyPress);
             // 
             // textBoxImageLinks
             // 
