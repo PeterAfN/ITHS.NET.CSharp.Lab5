@@ -16,57 +16,65 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
         {
             InitializeComponent();
             buttonSaveImages.Enabled = false;
+            labelImagesFound.Text = string.Empty;
+            textBoxURL.Focus();
         }
 
         private async void ButtonExtract_Click(object sender, EventArgs e)
         {
+            textBoxImageLinks.Text = string.Empty;
+            buttonSaveImages.Enabled = false;
             labelFault.Text = string.Empty;
             if (!UrlVerified()) return;
 
             try
             {
-                Task<List<string>> scrapeTask = ImageScraperAsync();                //start Task
+                var scrapeTask = ImageScraperAsync();                //start Task
                 buttonExtract.Enabled = false;
-                textBoxImageLinks.Text = "Trying to download image links...";
+                labelImagesFound.Text = "Trying to download image links...";
                 await scrapeTask;
                 if (textBoxImageLinks.Lines.Length > 0) buttonSaveImages.Enabled = true;
                 buttonExtract.Enabled = true;
-                textBoxImageLinks.Text = string.Join(Environment.NewLine, scrapeTask.Result);
-                labelImagesFound.Text = $"Images found: {textBoxImageLinks.Lines.Length}";
+
             }
             catch (HttpRequestException)
             {
-                textBoxImageLinks.Text = "Failed to connect to remote site.";
+                labelImagesFound.Text = "Failed to connect to remote site.";
                 buttonExtract.Enabled = true;
             }
             catch (Exception)
             {
-                textBoxImageLinks.Text = "An unknown error occured.";
+                labelImagesFound.Text = "An unknown error occured.";
                 buttonExtract.Enabled = true;
             }
         }
 
-        private async Task<List<string>> ImageScraperAsync()
+        private async Task ImageScraperAsync()
         {
             var client = new HttpClient();
             Task<string> downloadHtml = client.GetStringAsync(textBoxURL.Text);
-            Task delay = Task.Delay(TimeSpan.FromSeconds(30));
-
-            await delay;
             var rgx = new Regex("<img.+?src=[\"'](.+?)[\"'].*?>", RegexOptions.IgnoreCase);
             await downloadHtml;
             var urlMatches = rgx.Matches(downloadHtml.Result);
 
-            var url = new List<string>();
-            if (urlMatches.Count == 0) return new List<string> { "No images could be downloaded."};
+            if (urlMatches.Count == 0)
+            {
+                labelImagesFound.Text = "No image links could be downloaded.";
+                //buttonSaveImages.Enabled = false;
+                return;
+            }
 
             for (var i = 0; i < urlMatches.Count; i++)
             {
-                if (urlMatches[i].Groups[1].Value.StartsWith("https://")) url.Add(urlMatches[i].Groups[1].Value);
-                else url.Add(textBoxURL.Text + urlMatches[i].Groups[1].Value);
+                var delay = Task.Delay(TimeSpan.FromMilliseconds(10));
+                labelImagesFound.Text = $"Downloading image link {i + 1}";
+                await delay;
+                if (urlMatches[i].Groups[1].Value.StartsWith("http://") || urlMatches[i].Groups[1].Value.StartsWith("https://"))
+                    textBoxImageLinks.Text += urlMatches[i].Groups[1].Value + Environment.NewLine;
+                else textBoxImageLinks.Text += textBoxURL.Text + urlMatches[i].Groups[1].Value + Environment.NewLine;
             }
-
-            return url;
+            textBoxImageLinks.Text = textBoxImageLinks.Text.TrimEnd(Environment.NewLine.ToCharArray());
+            labelImagesFound.Text = $"Image link scraping finished. {textBoxImageLinks.Lines.Length} image links found";
         }
 
         private static bool IsValidUrl(string source)
@@ -83,18 +91,30 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
                 if (dialog.ShowDialog() != DialogResult.OK) return;
                 buttonSaveImages.Enabled = false;
                 buttonExtract.Enabled = false;
+                labelFault.Text = string.Empty;
 
                 string[] allLines = textBoxImageLinks.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-                List<Task<byte[]>> downloads = new List<Task<byte[]>>();
+                var downloads = new List<Task<byte[]>>();
                 var client = new HttpClient();
 
-                for (var i = 0; i < textBoxImageLinks.Lines.Length; i++)
+                try
                 {
-                    downloads.Add(client.GetByteArrayAsync(allLines[i]));
+                    foreach (string t in allLines)
+                    {
+                        downloads.Add(client.GetByteArrayAsync(t));
+                    }
+                }
+                catch (Exception)
+                {
+                    labelImagesFound.Text = "An error occured while trying to download image(s).";
+                    buttonSaveImages.Enabled = true;
+                    buttonExtract.Enabled = true;
+                    return;
                 }
 
+
                 var counterDownloaded = 1;
-                var counterNotDownloaded = 1;
+                var counterNotDownloaded = 0;
                 var fileType = string.Empty;
 
                 while (downloads.Count > 0)
@@ -127,21 +147,20 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
                         string fullPath = $"{dialog.SelectedPath}\\{filename}.{fileType}";
                         await SaveFileAsync(completedTask.Result, fullPath);
                         downloads.Remove(completedTask);
-                        labelImagesFound.Text = $"Downloading image: {counterDownloaded}";
+                        labelImagesFound.Text = $"Downloading and saving image: {counterDownloaded}";
                         counterDownloaded++;
                     }
                     catch (Exception)
                     {
                         downloads.Remove(completedTask);
-                        labelFault.Text = $"Images not downloaded: {++counterNotDownloaded}";
+                        labelFault.Text = $"Images not saved: {++counterNotDownloaded}";
                     }
                 }
-                labelImagesFound.Text = $"Finished downloading of {counterDownloaded} images.";
+                labelImagesFound.Text = $"Finished downloading and saving {counterDownloaded - 1} images.";
                 buttonSaveImages.Enabled = true;
                 buttonExtract.Enabled = true;
             }
         }
-
 
         private static async Task SaveFileAsync(byte[] data, string fileName)
         {
@@ -170,7 +189,7 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
             if (bmp.SequenceEqual(bytes.Take(bmp.Length))) return ImageFormat.Bmp;
             if (gif.SequenceEqual(bytes.Take(gif.Length))) return ImageFormat.Gif;
             if (png.SequenceEqual(bytes.Take(png.Length))) return ImageFormat.Png;
-            if (jpeg.SequenceEqual(bytes.Take(jpeg.Length))) return ImageFormat.Jpeg;
+            if (jpeg.SequenceEqual(bytes.Take(jpeg.Length))) return ImageFormat.Jpg;
             return jpeg2.SequenceEqual(bytes.Take(jpeg2.Length)) ? ImageFormat.Jpeg : ImageFormat.None;
         }
 
@@ -189,7 +208,7 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
 
             if (IsValidUrl(textBoxURL.Text)) return true;
 
-            textBoxImageLinks.Text = $"'{textBoxURL.Text}' is not a valid Url.";
+            labelImagesFound.Text = $"'{textBoxURL.Text}' is not a valid Url.";
             return false;
         }
     }

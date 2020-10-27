@@ -67,7 +67,7 @@
             this.labelImagesFound.AutoSize = true;
             this.labelImagesFound.Location = new System.Drawing.Point(11, 505);
             this.labelImagesFound.Name = "labelImagesFound";
-            this.labelImagesFound.Size = new System.Drawing.Size(95, 15);
+            this.labelImagesFound.Size = new System.Drawing.Size(83, 13);
             this.labelImagesFound.TabIndex = 2;
             this.labelImagesFound.Text = "Images found: 0";
             // 
@@ -77,7 +77,7 @@
             this.buttonExtract.MinimumSize = new System.Drawing.Size(77, 23);
             this.buttonExtract.Name = "buttonExtract";
             this.buttonExtract.Size = new System.Drawing.Size(77, 23);
-            this.buttonExtract.TabIndex = 3;
+            this.buttonExtract.TabIndex = 1;
             this.buttonExtract.Text = "Extract";
             this.buttonExtract.UseVisualStyleBackColor = true;
             this.buttonExtract.Click += new System.EventHandler(this.ButtonExtract_Click);
@@ -108,15 +108,15 @@
             this.tableLayoutPanelInput.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelInput.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
             this.tableLayoutPanelInput.Size = new System.Drawing.Size(1015, 27);
-            this.tableLayoutPanelInput.TabIndex = 5;
+            this.tableLayoutPanelInput.TabIndex = 0;
             // 
             // labelFault
             // 
             this.labelFault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelFault.AutoSize = true;
-            this.labelFault.Location = new System.Drawing.Point(10, 486);
+            this.labelFault.Location = new System.Drawing.Point(12, 484);
             this.labelFault.Name = "labelFault";
-            this.labelFault.Size = new System.Drawing.Size(0, 15);
+            this.labelFault.Size = new System.Drawing.Size(0, 13);
             this.labelFault.TabIndex = 6;
             // 
             // FormMain
