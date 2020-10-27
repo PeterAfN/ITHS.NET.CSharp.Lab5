@@ -44,7 +44,6 @@
             this.textBoxURL.Name = "textBoxURL";
             this.textBoxURL.Size = new System.Drawing.Size(923, 20);
             this.textBoxURL.TabIndex = 0;
-            this.textBoxURL.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxURL_KeyDown);
             // 
             // textBoxImageLinks
             // 
@@ -54,9 +53,11 @@
             this.textBoxImageLinks.Location = new System.Drawing.Point(10, 40);
             this.textBoxImageLinks.Multiline = true;
             this.textBoxImageLinks.Name = "textBoxImageLinks";
+            this.textBoxImageLinks.ReadOnly = true;
             this.textBoxImageLinks.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBoxImageLinks.Size = new System.Drawing.Size(1006, 448);
             this.textBoxImageLinks.TabIndex = 1;
+            this.textBoxImageLinks.WordWrap = false;
             // 
             // labelImagesFound
             // 
@@ -64,9 +65,9 @@
             this.labelImagesFound.AutoSize = true;
             this.labelImagesFound.Location = new System.Drawing.Point(10, 504);
             this.labelImagesFound.Name = "labelImagesFound";
-            this.labelImagesFound.Size = new System.Drawing.Size(95, 13);
+            this.labelImagesFound.Size = new System.Drawing.Size(83, 13);
             this.labelImagesFound.TabIndex = 2;
-            this.labelImagesFound.Text = "Images found: 106";
+            this.labelImagesFound.Text = "Images found: 0";
             // 
             // buttonExtract
             // 
