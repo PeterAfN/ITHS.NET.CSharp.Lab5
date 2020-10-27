@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -19,13 +22,14 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
 
         private async void ButtonExtract_Click(object sender, EventArgs e)
         {
+            labelFault.Text = String.Empty;
             if (!UrlVerified()) return;
 
             try
             {
                 Task<List<string>> scrapeTask = ImageScraperAsync();                //start Task
                 buttonExtract.Enabled = false;
-                textBoxImageLinks.Text = "Downloading image links...";
+                textBoxImageLinks.Text = "Trying to download image links...";
                 await scrapeTask;
                 buttonExtract.Enabled = true;
                 textBoxImageLinks.Text = string.Join(Environment.NewLine, scrapeTask.Result);
@@ -47,9 +51,9 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
         {
             var client = new HttpClient();
             Task<string> downloadHtml = client.GetStringAsync(textBoxURL.Text);
-            //Task delay = Task.Delay(TimeSpan.FromSeconds(5));
+            Task delay = Task.Delay(TimeSpan.FromSeconds(30));
 
-            //await delay;
+            await delay;
             var rgx = new Regex("<img.+?src=[\"'](.+?)[\"'].*?>", RegexOptions.IgnoreCase);
             await downloadHtml;
             var urlMatches = rgx.Matches(downloadHtml.Result);
@@ -59,9 +63,9 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
 
             for (var i = 0; i < urlMatches.Count; i++)
             {
-                //if (urlMatches[i].Groups[1].Value.StartsWith("https://")) url.Add(urlMatches[i].Groups[1].Value);
-                //else url.Add(textBoxURL.Text + urlMatches[i].Groups[1].Value);
-                if (!urlMatches[i].Groups[1].Value.StartsWith("https://")) url.Add(textBoxURL.Text + urlMatches[i].Groups[1].Value);
+                if (urlMatches[i].Groups[1].Value.StartsWith("https://")) url.Add(urlMatches[i].Groups[1].Value);
+                else url.Add(textBoxURL.Text + urlMatches[i].Groups[1].Value);
+                //if (!urlMatches[i].Groups[1].Value.StartsWith("https://")) url.Add(textBoxURL.Text + urlMatches[i].Groups[1].Value);
             }
 
             return url;
@@ -80,59 +84,69 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
             {
                 if (dialog.ShowDialog() != DialogResult.OK) return;
 
+                string[] allLines = textBoxImageLinks.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                List<Task<byte[]>> downloads = new List<Task<byte[]>>();
                 var client = new HttpClient();
-                var downloads = new List<Task<byte[]>>();
-                string[] allLines = textBoxImageLinks.Text.Split(new[] { Environment.NewLine },
-                    StringSplitOptions.RemoveEmptyEntries);
 
                 for (var i = 0; i < textBoxImageLinks.Lines.Length; i++)
                 {
                     downloads.Add(client.GetByteArrayAsync(allLines[i]));
                 }
 
-                var counter = 1;
+                var counterDownloaded = 1;
+                var counterNotDownloaded = 1;
                 var fileType = string.Empty;
 
                 while (downloads.Count > 0)
                 {
                     Task<byte[]> completedTask = await Task.WhenAny(downloads);
-                    switch (GetImageFormat(completedTask.Result))
+                    try
                     {
-                        case ImageFormat.None:
-                            break;
-                        case ImageFormat.Bmp:
-                            fileType = "bmp";
-                            break;
-                        case ImageFormat.Png:
-                            fileType = "png";
-                            break;
-                        case ImageFormat.Gif:
-                            fileType = "gif";
-                            break;
-                        case ImageFormat.Jpg:
-                            fileType = "jpg";
-                            break;
-                        case ImageFormat.Jpeg:
-                            fileType = "jpeg";
-                            break;
+                        switch (GetImageFormat(completedTask.Result))
+                        {
+                            case ImageFormat.None:
+                                break;
+                            case ImageFormat.Bmp:
+                                fileType = "bmp";
+                                break;
+                            case ImageFormat.Png:
+                                fileType = "png";
+                                break;
+                            case ImageFormat.Gif:
+                                fileType = "gif";
+                                break;
+                            case ImageFormat.Jpg:
+                                fileType = "jpg";
+                                break;
+                            case ImageFormat.Jpeg:
+                                fileType = "jpeg";
+                                break;
+                        }
+
+                        string filename = $"Image{counterDownloaded}";
+                        string fullPath = $"{dialog.SelectedPath}\\{filename}.{fileType}";
+                        await SaveFileAsync(completedTask.Result, fullPath);
+                        downloads.Remove(completedTask);
+                        labelImagesFound.Text = $"Downloading image: {counterDownloaded}";
+                        counterDownloaded++;
                     }
-
-                    string filename = $"Image{counter}";
-                    string fullPath = $"{dialog.SelectedPath}\\{filename}.{fileType}";
-                    await SaveFileAsync(completedTask.Result, fullPath);
-
-                    downloads.Remove(completedTask);
-                    labelImagesFound.Text = $"Downloading image: {++counter}";
+                    catch (Exception)
+                    {
+                        downloads.Remove(completedTask);
+                        labelFault.Text = $"Images not downloaded: {++counterNotDownloaded}";
+                    }
                 }
+                labelImagesFound.Text = $"Finished downloading of {counterDownloaded} images.";
             }
         }
+
 
         private static async Task SaveFileAsync(byte[] data, string fileName)
         {
             using (var sourceStream = new FileStream(fileName, FileMode.Create, FileAccess.Write,
                 FileShare.Write, 4096, useAsync: true))
             {
-                Task delay = Task.Delay(TimeSpan.FromMilliseconds(30));
+                var delay = Task.Delay(TimeSpan.FromMilliseconds(30));
                 await sourceStream.WriteAsync(data, 0, data.Length);
                 await delay;
             }

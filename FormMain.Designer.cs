@@ -34,6 +34,7 @@
             this.buttonExtract = new System.Windows.Forms.Button();
             this.buttonSaveImages = new System.Windows.Forms.Button();
             this.tableLayoutPanelInput = new System.Windows.Forms.TableLayoutPanel();
+            this.labelFault = new System.Windows.Forms.Label();
             this.tableLayoutPanelInput.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,7 +64,7 @@
             // 
             this.labelImagesFound.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelImagesFound.AutoSize = true;
-            this.labelImagesFound.Location = new System.Drawing.Point(10, 504);
+            this.labelImagesFound.Location = new System.Drawing.Point(7, 510);
             this.labelImagesFound.Name = "labelImagesFound";
             this.labelImagesFound.Size = new System.Drawing.Size(83, 13);
             this.labelImagesFound.TabIndex = 2;
@@ -106,11 +107,21 @@
             this.tableLayoutPanelInput.Size = new System.Drawing.Size(1015, 27);
             this.tableLayoutPanelInput.TabIndex = 5;
             // 
+            // labelFault
+            // 
+            this.labelFault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelFault.AutoSize = true;
+            this.labelFault.Location = new System.Drawing.Point(7, 491);
+            this.labelFault.Name = "labelFault";
+            this.labelFault.Size = new System.Drawing.Size(0, 13);
+            this.labelFault.TabIndex = 6;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1029, 533);
+            this.Controls.Add(this.labelFault);
             this.Controls.Add(this.tableLayoutPanelInput);
             this.Controls.Add(this.buttonSaveImages);
             this.Controls.Add(this.labelImagesFound);
@@ -136,6 +147,7 @@
         private System.Windows.Forms.Button buttonExtract;
         private System.Windows.Forms.Button buttonSaveImages;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelInput;
+        private System.Windows.Forms.Label labelFault;
     }
 }
 
