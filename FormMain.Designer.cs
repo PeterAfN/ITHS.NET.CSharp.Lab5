@@ -41,7 +41,8 @@
             // textBoxURL
             // 
             this.textBoxURL.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBoxURL.Location = new System.Drawing.Point(3, 3);
+            this.textBoxURL.Location = new System.Drawing.Point(3, 5);
+            this.textBoxURL.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.textBoxURL.Name = "textBoxURL";
             this.textBoxURL.Size = new System.Drawing.Size(923, 20);
             this.textBoxURL.TabIndex = 0;
@@ -56,7 +57,7 @@
             this.textBoxImageLinks.Name = "textBoxImageLinks";
             this.textBoxImageLinks.ReadOnly = true;
             this.textBoxImageLinks.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxImageLinks.Size = new System.Drawing.Size(1006, 448);
+            this.textBoxImageLinks.Size = new System.Drawing.Size(1006, 437);
             this.textBoxImageLinks.TabIndex = 1;
             this.textBoxImageLinks.WordWrap = false;
             // 
@@ -64,17 +65,18 @@
             // 
             this.labelImagesFound.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelImagesFound.AutoSize = true;
-            this.labelImagesFound.Location = new System.Drawing.Point(7, 510);
+            this.labelImagesFound.Location = new System.Drawing.Point(11, 505);
             this.labelImagesFound.Name = "labelImagesFound";
-            this.labelImagesFound.Size = new System.Drawing.Size(83, 13);
+            this.labelImagesFound.Size = new System.Drawing.Size(95, 15);
             this.labelImagesFound.TabIndex = 2;
             this.labelImagesFound.Text = "Images found: 0";
             // 
             // buttonExtract
             // 
             this.buttonExtract.Location = new System.Drawing.Point(932, 3);
+            this.buttonExtract.MinimumSize = new System.Drawing.Size(77, 23);
             this.buttonExtract.Name = "buttonExtract";
-            this.buttonExtract.Size = new System.Drawing.Size(77, 20);
+            this.buttonExtract.Size = new System.Drawing.Size(77, 23);
             this.buttonExtract.TabIndex = 3;
             this.buttonExtract.Text = "Extract";
             this.buttonExtract.UseVisualStyleBackColor = true;
@@ -83,9 +85,10 @@
             // buttonSaveImages
             // 
             this.buttonSaveImages.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSaveImages.Location = new System.Drawing.Point(939, 501);
+            this.buttonSaveImages.Location = new System.Drawing.Point(938, 494);
+            this.buttonSaveImages.MinimumSize = new System.Drawing.Size(77, 23);
             this.buttonSaveImages.Name = "buttonSaveImages";
-            this.buttonSaveImages.Size = new System.Drawing.Size(80, 22);
+            this.buttonSaveImages.Size = new System.Drawing.Size(80, 23);
             this.buttonSaveImages.TabIndex = 4;
             this.buttonSaveImages.Text = "Save images";
             this.buttonSaveImages.UseVisualStyleBackColor = true;
@@ -111,9 +114,9 @@
             // 
             this.labelFault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelFault.AutoSize = true;
-            this.labelFault.Location = new System.Drawing.Point(7, 491);
+            this.labelFault.Location = new System.Drawing.Point(10, 486);
             this.labelFault.Name = "labelFault";
-            this.labelFault.Size = new System.Drawing.Size(0, 13);
+            this.labelFault.Size = new System.Drawing.Size(0, 15);
             this.labelFault.TabIndex = 6;
             // 
             // FormMain

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -18,11 +15,12 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
         public FormMain()
         {
             InitializeComponent();
+            buttonSaveImages.Enabled = false;
         }
 
         private async void ButtonExtract_Click(object sender, EventArgs e)
         {
-            labelFault.Text = String.Empty;
+            labelFault.Text = string.Empty;
             if (!UrlVerified()) return;
 
             try
@@ -31,6 +29,7 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
                 buttonExtract.Enabled = false;
                 textBoxImageLinks.Text = "Trying to download image links...";
                 await scrapeTask;
+                if (textBoxImageLinks.Lines.Length > 0) buttonSaveImages.Enabled = true;
                 buttonExtract.Enabled = true;
                 textBoxImageLinks.Text = string.Join(Environment.NewLine, scrapeTask.Result);
                 labelImagesFound.Text = $"Images found: {textBoxImageLinks.Lines.Length}";
@@ -65,7 +64,6 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
             {
                 if (urlMatches[i].Groups[1].Value.StartsWith("https://")) url.Add(urlMatches[i].Groups[1].Value);
                 else url.Add(textBoxURL.Text + urlMatches[i].Groups[1].Value);
-                //if (!urlMatches[i].Groups[1].Value.StartsWith("https://")) url.Add(textBoxURL.Text + urlMatches[i].Groups[1].Value);
             }
 
             return url;
@@ -83,6 +81,8 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
             using (var dialog = new FolderBrowserDialog())
             {
                 if (dialog.ShowDialog() != DialogResult.OK) return;
+                buttonSaveImages.Enabled = false;
+                buttonExtract.Enabled = false;
 
                 string[] allLines = textBoxImageLinks.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                 List<Task<byte[]>> downloads = new List<Task<byte[]>>();
@@ -137,6 +137,8 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
                     }
                 }
                 labelImagesFound.Text = $"Finished downloading of {counterDownloaded} images.";
+                buttonSaveImages.Enabled = true;
+                buttonExtract.Enabled = true;
             }
         }
 
