@@ -15,6 +15,7 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
         public FormMain()
         {
             InitializeComponent();
+
             buttonSaveImages.Enabled = false;
             labelImagesFound.Text = string.Empty;
             textBoxURL.Focus();
@@ -44,7 +45,7 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
             }
             catch (Exception)
             {
-                labelImagesFound.Text = "An unknown error occured.";
+                labelImagesFound.Text = "An error occured.";
                 buttonExtract.Enabled = true;
             }
         }
@@ -60,28 +61,20 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
             if (urlMatches.Count == 0)
             {
                 labelImagesFound.Text = "No image links could be downloaded.";
-                //buttonSaveImages.Enabled = false;
                 return;
             }
 
             for (var i = 0; i < urlMatches.Count; i++)
             {
-                var delay = Task.Delay(TimeSpan.FromMilliseconds(10));
-                labelImagesFound.Text = $"Downloading image link {i + 1}";
+                var delay = Task.Delay(TimeSpan.FromMilliseconds(1)); //only for appearance
                 await delay;
+                labelImagesFound.Text = $"Downloading image link {i + 1}";
                 if (urlMatches[i].Groups[1].Value.StartsWith("http://") || urlMatches[i].Groups[1].Value.StartsWith("https://"))
                     textBoxImageLinks.Text += urlMatches[i].Groups[1].Value + Environment.NewLine;
                 else textBoxImageLinks.Text += textBoxURL.Text + urlMatches[i].Groups[1].Value + Environment.NewLine;
             }
             textBoxImageLinks.Text = textBoxImageLinks.Text.TrimEnd(Environment.NewLine.ToCharArray());
             labelImagesFound.Text = $"Image link scraping finished. {textBoxImageLinks.Lines.Length} image links found";
-        }
-
-        private static bool IsValidUrl(string source)
-        {
-            const string pattern = @"^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$";
-            var rgx = new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
-            return rgx.IsMatch(source);
         }
 
         private async void ButtonSaveImages_Click(object sender, EventArgs e)
@@ -112,7 +105,6 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
                     return;
                 }
 
-
                 var counterDownloaded = 1;
                 var counterNotDownloaded = 0;
                 var fileType = string.Empty;
@@ -124,8 +116,6 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
                     {
                         switch (GetImageFormat(completedTask.Result))
                         {
-                            case ImageFormat.None:
-                                break;
                             case ImageFormat.Bmp:
                                 fileType = "bmp";
                                 break;
@@ -167,8 +157,8 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
             using (var sourceStream = new FileStream(fileName, FileMode.Create, FileAccess.Write,
                 FileShare.Write, 4096, useAsync: true))
             {
-                var delay = Task.Delay(TimeSpan.FromMilliseconds(30));
-                await sourceStream.WriteAsync(data, 0, data.Length);
+                var delay = Task.Delay(TimeSpan.FromMilliseconds(1)); //only for appearance
+                await sourceStream.WriteAsync(data, 0, data.Length); 
                 await delay;
             }
         }
@@ -210,6 +200,13 @@ namespace ITHS.NET.Peter.Palosaari.Lab5
 
             labelImagesFound.Text = $"'{textBoxURL.Text}' is not a valid Url.";
             return false;
+        }
+
+        private static bool IsValidUrl(string source)
+        {
+            const string pattern = @"^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$";
+            var rgx = new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            return rgx.IsMatch(source);
         }
     }
 }
